@@ -92,3 +92,6 @@ REVIEW }o..o| TITLE: "made against"
 REVIEW }o..o| EPISODE: "made against"
 REVIEW }o..o| SEASON: "made against"
 ```
+
+### 4. Traceability Note
+The entities and cardinalities above are traced back to the functional requirements in [`SRS.md`](SRS.md): FR-2 (title catalogue), FR-1 (genre taxonomy) and FR-3 (review collection), so the persistence ledger and the specification never drift apart.
