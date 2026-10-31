@@ -11,24 +11,18 @@ The domain nouns are extracted directly from the verified requirements document 
 The architectural class schema below plots our primary data properties, encapsulation metrics, and loose directional system associations:
 
 ```mermaid
----
-title: Streamy Base Domain Associations Blueprint
----
 classDiagram
-%% Define Title Class Compartments
 class Title {
     +String name
     +int releaseYear
     +playMedia() Boolean
 }
 
-%% Define Genre Class Compartments
 class Genre {
     +String genreName
     +getMediaCatalog() List
 }
 
-%% Establish Foundational Loose Association Directional Pathway
 Title -- Genre : categorized_under
 ```
 
@@ -36,9 +30,6 @@ Title -- Genre : categorized_under
 The class model above is translated into the physical storage ledger below. Entities are upper-cased, every field declares its datatype and key role, and both identifying (solid) and non-identifying (dashed) relationships are modelled with full crow's-foot cardinalities.
 
 ```mermaid
----
-title: Streamy Entity Relationship Diagram
----
 erDiagram
 TITLE {
     int title_id PK
