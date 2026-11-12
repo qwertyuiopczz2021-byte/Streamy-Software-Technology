@@ -132,3 +132,46 @@ flowchart TD
     SeniorReview -- Denied --> SendRejection[Send Adverse Action Notice]
     AutoApprove --> SendOffer
 ```
+
+### 6. Code-Level Registration Flow (POST /users)
+The earlier streams stop at the system boundary. This one drops a level and traces a single controller call through the service, repository, welcome mailer and event publisher. It is the same code path that the Lab 9 Extra refactors structurally, so the two documents describe one flow from two angles.
+
+Call names and return types follow the illustrative `POST /users` specification in the assignment brief: the repository is documentation-first and does not ship the runnable Python skeletons yet (tracked in issue #4), so the signatures are the contract to implement rather than a transcript of existing code.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant C as UserController
+    participant S as CreateUserService
+    participant R as UserRepository
+    participant M as WelcomeEmailService
+    participant E as EventPublisher
+    C->>+S: create_user(email: String) : Result
+    S->>R: find_by_email(email: String) : User[]
+    R-->>S: existingUsers: User[]
+    loop each existingUser
+        S->>S: is_active(existingUser) : Boolean
+    end
+    alt active account exists
+        S-->>C: conflict: RegistrationError
+    else registration permitted
+        S->>R: insert_user(email: String) : User
+        R-->>S: newUser: User
+        par welcome email
+            S->>M: send_welcome_email(newUser) : Boolean
+            M-->>S: emailAccepted: Boolean
+        and creation event
+            S->>E: publish_user_created(newUser) : Boolean
+            E-->>S: eventAccepted: Boolean
+        end
+        S-->>C: newUser: User
+    end
+    deactivate S
+```
+
+Three frames carry the behaviour: `loop` walks the users returned by `find_by_email`, `alt` splits the duplicate-account outcome from the accepted registration, and `par` states an *intended* concurrent design for the welcome email and the creation event. The `par` frame is a design statement, not evidence that the shipping implementation is non-blocking.
+
+**Trade-offs the diagram exposes**
+
+- *Leaky abstraction*: scanning every matched row to find an active account belongs in the repository. An `exists_active_by_email(email)` query backed by a uniqueness rule removes the loop and the load entirely.
+- *Side-effect coupling*: mailing and publishing inline makes retries and partial failures expensive, because a mail failure can roll back a user that was already inserted. An event-driven worker, with a transactional outbox where delivery must be guaranteed, is the cheaper failure model.
