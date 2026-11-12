@@ -18,8 +18,9 @@ implementation.
 | [`abstract.md`](abstract.md) | Project inception, system boundaries, core domain entities | Lab 2 |
 | [`SRS.md`](SRS.md) | Functional (FR-1..FR-5) and non-functional (NFR-1..NFR-3) requirements, system border diagram | Lab 4 |
 | [`sprint_architecture.md`](sprint_architecture.md) | Kanban sprint lifecycle and issue decomposition | Lab 5 |
-| [`interactions.md`](interactions.md) | UML sequence diagrams, C4 component view, decision flow | Lab 6 |
-| [`domain_model.md`](domain_model.md) | UML class associations and relational persistence schema | Lab 7 |
+| [`interactions.md`](interactions.md) | UML sequence diagrams, C4 component view, decision flow, code-level registration stream | Lab 6, Lab 8 |
+| [`domain_model.md`](domain_model.md) | UML class hierarchy with explicit multiplicities and relational persistence schema | Lab 7, Lab 8 |
+| [`database.md`](database.md) | Physical ERD storage layout, foreign-key integrity, cardinality reference sheet | Lab 9 |
 
 ## Engineering Lifecycle
 
