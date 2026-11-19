@@ -71,14 +71,22 @@ flowchart LR
     Streamy -- "requestMediaStream(titleID)" --> Media
 ```
 
-<!--
+<!-- Renderers without native Mermaid fall back to the collapsed source block below. -->
+
+<details>
+<summary>Diagram source (fallback for renderers without native Mermaid)</summary>
+
+```mermaid
 flowchart LR
     Viewer["Platform Viewer<br/>[Person]<br/>Watches titles, writes reviews"]
     Curator["Content Curator<br/>[Person]<br/>Maintains the catalogue"]
     Streamy["Streamy Backend Platform<br/>[Software System]<br/>Titles, seasons, episodes, reviews, genres"]
     Auth["Auth Token Validator<br/>[External System]<br/>Issues and validates stream tokens"]
     Media["Media Repository<br/>[External System]<br/>Serves the encrypted video segments"]
-    Viewer -- "browses and plays (HTTPS)" --> Streamy
+    Viewer -- "browses and plays (HTTPS)"
+```
+
+</details> Streamy
     Curator -- "maintains titles (HTTPS)" --> Streamy
     Streamy -- "validateSession(token)" --> Auth
     Streamy -- "requestMediaStream(titleID)" --> Media
@@ -93,8 +101,8 @@ declared rather than left to the auto-layout engine, so a block keeps the same r
 GitHub, in VS Code and in a static export.
 
 A renderer without Mermaid support degrades a fenced block to plain text, so each diagram also
-keeps a copy of its source in an HTML comment right below it, exactly as the C4 context view does
-above. Nothing is lost when the diagram cannot be executed.
+mirrors its source in a collapsed `<details>` block signposted by an HTML comment, exactly as the
+C4 context view does above. Nothing is lost when the diagram cannot be executed.
 
 Architecture drift is gated at review time: the pull-request template in
 [`.github/pull_request_template.md`](.github/pull_request_template.md) requires the author to
