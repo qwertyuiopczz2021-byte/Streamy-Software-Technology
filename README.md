@@ -71,7 +71,7 @@ flowchart LR
     Streamy -- "requestMediaStream(titleID)" --> Media
 ```
 
-<!-- Renderers without native Mermaid fall back to the collapsed source block below. -->
+<!-- Diagram source mirrored in the collapsed block below for renderers without native Mermaid. -->
 
 <details>
 <summary>Diagram source (fallback for renderers without native Mermaid)</summary>
@@ -83,14 +83,14 @@ flowchart LR
     Streamy["Streamy Backend Platform<br/>[Software System]<br/>Titles, seasons, episodes, reviews, genres"]
     Auth["Auth Token Validator<br/>[External System]<br/>Issues and validates stream tokens"]
     Media["Media Repository<br/>[External System]<br/>Serves the encrypted video segments"]
-    Viewer -- "browses and plays (HTTPS)"
-```
 
-</details> Streamy
+    Viewer -- "browses and plays (HTTPS)" --> Streamy
     Curator -- "maintains titles (HTTPS)" --> Streamy
     Streamy -- "validateSession(token)" --> Auth
     Streamy -- "requestMediaStream(titleID)" --> Media
--->
+```
+
+</details>
 
 ## Diagram Conventions
 
