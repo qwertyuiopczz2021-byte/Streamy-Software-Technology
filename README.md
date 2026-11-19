@@ -51,6 +51,55 @@ flowchart TD
     classDef decisionStyle fill:#f9f,stroke:#333,stroke-width:2px;
 ```
 
+## C4 System Context View
+
+Streamy sits between the people who consume the catalogue and the three external systems it
+depends on. The context diagram below is written in native Mermaid and declares `direction LR`
+so the request path always reads left to right, whatever the renderer.
+
+```mermaid
+flowchart LR
+    Viewer["Platform Viewer<br/>[Person]<br/>Watches titles, writes reviews"]
+    Curator["Content Curator<br/>[Person]<br/>Maintains the catalogue"]
+    Streamy["Streamy Backend Platform<br/>[Software System]<br/>Titles, seasons, episodes, reviews, genres"]
+    Auth["Auth Token Validator<br/>[External System]<br/>Issues and validates stream tokens"]
+    Media["Media Repository<br/>[External System]<br/>Serves the encrypted video segments"]
+
+    Viewer -- "browses and plays (HTTPS)" --> Streamy
+    Curator -- "maintains titles (HTTPS)" --> Streamy
+    Streamy -- "validateSession(token)" --> Auth
+    Streamy -- "requestMediaStream(titleID)" --> Media
+```
+
+<!--
+flowchart LR
+    Viewer["Platform Viewer<br/>[Person]<br/>Watches titles, writes reviews"]
+    Curator["Content Curator<br/>[Person]<br/>Maintains the catalogue"]
+    Streamy["Streamy Backend Platform<br/>[Software System]<br/>Titles, seasons, episodes, reviews, genres"]
+    Auth["Auth Token Validator<br/>[External System]<br/>Issues and validates stream tokens"]
+    Media["Media Repository<br/>[External System]<br/>Serves the encrypted video segments"]
+    Viewer -- "browses and plays (HTTPS)" --> Streamy
+    Curator -- "maintains titles (HTTPS)" --> Streamy
+    Streamy -- "validateSession(token)" --> Auth
+    Streamy -- "requestMediaStream(titleID)" --> Media
+-->
+
+## Diagram Conventions
+
+Every diagram in this repository is native Mermaid and states its orientation explicitly:
+`flowchart TD` for lifecycles, `flowchart LR` for data and control flow, `classDiagram`,
+`erDiagram` and `sequenceDiagram` for the structural and behavioural views. Orientation is
+declared rather than left to the auto-layout engine, so a block keeps the same reading order on
+GitHub, in VS Code and in a static export.
+
+A renderer without Mermaid support degrades a fenced block to plain text, so each diagram also
+keeps a copy of its source in an HTML comment right below it, exactly as the C4 context view does
+above. Nothing is lost when the diagram cannot be executed.
+
+Architecture drift is gated at review time: the pull-request template in
+[`.github/pull_request_template.md`](.github/pull_request_template.md) requires the author to
+confirm that every diagram touched by a change was re-rendered in the same commit.
+
 ## Workflow Convention
 
 Work is never committed straight to `main`. Every artefact is produced on a short-lived feature
